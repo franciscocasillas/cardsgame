@@ -21,6 +21,8 @@ function drawCard() {
 		.then((data) => {
 			console.log(data);
 			console.log(data.cards[0].image);
+			document.querySelector(".userCard").src = data.cards[0].image;
+			document.querySelector(".computerCard").src = data.cards[1].image;
 		})
 		.catch((err) => console.log(`error ${err}`));
 }
