@@ -20,9 +20,19 @@ function drawCard() {
 		.then((res) => res.json())
 		.then((data) => {
 			console.log(data);
+			document.querySelector("h2").innerText = "";
 			console.log(data.cards[0].image);
 			document.querySelector(".userCard").src = data.cards[0].image;
 			document.querySelector(".computerCard").src = data.cards[1].image;
+			const userCardValue = data.cards[0].value;
+			const computerCardValue = data.cards[1].value;
+			if (userCardValue > computerCardValue) {
+				document.querySelector("h2").innerText = "You Win!";
+			} else if (userCardValue < computerCardValue) {
+				document.querySelector("h2").innerText = "You lose";
+			} else {
+				document.querySelector("h2").innerText = "It's a tie";
+			}
 		})
 		.catch((err) => console.log(`error ${err}`));
 }
