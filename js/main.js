@@ -24,8 +24,9 @@ function drawCard() {
 			console.log(data.cards[0].image);
 			document.querySelector(".userCard").src = data.cards[0].image;
 			document.querySelector(".computerCard").src = data.cards[1].image;
-			const userCardValue = data.cards[0].value;
-			const computerCardValue = data.cards[1].value;
+			console.log(data.cards[0].value);
+			let userCardValue = calculateValue(data.cards[0].value);
+			let computerCardValue = calculateValue(data.cards[1].value);
 			if (userCardValue > computerCardValue) {
 				document.querySelector("h2").innerText = "You Win!";
 			} else if (userCardValue < computerCardValue) {
@@ -35,4 +36,18 @@ function drawCard() {
 			}
 		})
 		.catch((err) => console.log(`error ${err}`));
+}
+
+function calculateValue(value) {
+	if (value === "ACE") {
+		return 14;
+	} else if (value === "KING") {
+		return 13;
+	} else if (value === "QUEEN") {
+		return 12;
+	} else if (value === "JACK") {
+		return 11;
+	} else {
+		return Number(value);
+	}
 }
