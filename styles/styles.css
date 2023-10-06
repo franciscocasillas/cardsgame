@@ -20,6 +20,10 @@ body {
 	padding: 5px 15px;
 }
 
+#table {
+	display: none;
+}
+
 header {
 	display: flex;
 	flex-direction: column;

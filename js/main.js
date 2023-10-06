@@ -9,10 +9,12 @@ function createDeck() {
 			deckID = data.deck_id;
 		})
 		.catch((err) => console.log(`error ${err}`));
-	changeButtons();
+	showGoToWarButton();
+	hideTable();
+	clearH2();
 }
 
-function changeButtons() {
+function showGoToWarButton() {
 	document.querySelector("#draw").style.display = "block";
 }
 
@@ -33,6 +35,10 @@ function drawCards() {
 
 function displayTable() {
 	document.querySelector("#table").style.display = "flex";
+}
+
+function hideTable() {
+	document.querySelector("#table").style.display = "none";
 }
 
 function clearH2() {
