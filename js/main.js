@@ -1,44 +1,46 @@
 document.querySelector("#deck").addEventListener("click", createDeck);
-document.querySelector("#draw").addEventListener("click", drawCard);
+document.querySelector("#draw").addEventListener("click", drawCards);
 let deckID = "";
 
 function createDeck() {
 	fetch("https://deckofcardsapi.com/api/deck/new/shuffle/?deck_count=1")
 		.then((res) => res.json())
 		.then((data) => {
-			console.log(data);
 			deckID = data.deck_id;
 		})
 		.catch((err) => console.log(`error ${err}`));
+	changeButtons();
+}
 
+function changeButtons() {
 	document.querySelector("#deck").style.display = "none";
 	document.querySelector("#draw").style.display = "block";
 }
 
-function drawCard() {
+function drawCards() {
 	fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=2`)
 		.then((res) => res.json())
 		.then((data) => {
-			console.log(data);
-			document.querySelector("h2").innerText = "";
-			console.log(data.cards[0].image);
-			document.querySelector(".userCard").src = data.cards[0].image;
-			document.querySelector(".computerCard").src = data.cards[1].image;
-			console.log(data.cards[0].value);
-			let userCardValue = calculateValue(data.cards[0].value);
-			let computerCardValue = calculateValue(data.cards[1].value);
-			if (userCardValue > computerCardValue) {
-				document.querySelector("h2").innerText = "You Win!";
-			} else if (userCardValue < computerCardValue) {
-				document.querySelector("h2").innerText = "You lose";
-			} else {
-				document.querySelector("h2").innerText = "It's a tie";
-			}
+			clearH2();
+			displayCardImages(data.cards[0].image, data.cards[1].image);
+			defineWinner(
+				calculateCardValue(data.cards[0].value),
+				calculateCardValue(data.cards[1].value)
+			);
 		})
 		.catch((err) => console.log(`error ${err}`));
 }
 
-function calculateValue(value) {
+function clearH2() {
+	document.querySelector("h2").innerText = "";
+}
+
+function displayCardImages(userCard, computerCard) {
+	document.querySelector(".userCard").src = userCard;
+	document.querySelector(".computerCard").src = computerCard;
+}
+
+function calculateCardValue(value) {
 	if (value === "ACE") {
 		return 14;
 	} else if (value === "KING") {
@@ -49,5 +51,15 @@ function calculateValue(value) {
 		return 11;
 	} else {
 		return Number(value);
+	}
+}
+
+function defineWinner(userCardValue, computerCardValue) {
+	if (userCardValue > computerCardValue) {
+		document.querySelector("h2").innerText = "You Win!";
+	} else if (userCardValue < computerCardValue) {
+		document.querySelector("h2").innerText = "You lose";
+	} else {
+		document.querySelector("h2").innerText = "It's a tie";
 	}
 }
