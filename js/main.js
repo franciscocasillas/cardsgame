@@ -10,20 +10,28 @@ function createDeck() {
 		})
 		.catch((err) => console.log(`error ${err}`));
 	showGoToWarButton();
-	hideTable();
-	clearH2();
+	hideCards();
+	clearResults();
 }
 
 function showGoToWarButton() {
 	document.querySelector("#draw").style.display = "block";
 }
 
+function hideCards() {
+	document.querySelector("#table").style.display = "none";
+}
+
+function clearResults() {
+	document.querySelector("h2").innerText = "";
+}
+
 function drawCards() {
 	fetch(`https://deckofcardsapi.com/api/deck/${deckID}/draw/?count=2`)
 		.then((res) => res.json())
 		.then((data) => {
-			clearH2();
-			displayTable();
+			clearResults();
+			displayCards();
 			displayCardImages(data.cards[0].image, data.cards[1].image);
 			defineWinner(
 				calculateCardValue(data.cards[0].value),
@@ -33,21 +41,23 @@ function drawCards() {
 		.catch((err) => console.log(`error ${err}`));
 }
 
-function displayTable() {
+function displayCards() {
 	document.querySelector("#table").style.display = "flex";
-}
-
-function hideTable() {
-	document.querySelector("#table").style.display = "none";
-}
-
-function clearH2() {
-	document.querySelector("h2").innerText = "";
 }
 
 function displayCardImages(userCard, computerCard) {
 	document.querySelector(".userCard").src = userCard;
 	document.querySelector(".computerCard").src = computerCard;
+}
+
+function defineWinner(userCardValue, computerCardValue) {
+	if (userCardValue > computerCardValue) {
+		document.querySelector("h2").innerText = "You Win!";
+	} else if (userCardValue < computerCardValue) {
+		document.querySelector("h2").innerText = "You lose";
+	} else {
+		document.querySelector("h2").innerText = "It's a tie";
+	}
 }
 
 function calculateCardValue(value) {
@@ -61,15 +71,5 @@ function calculateCardValue(value) {
 		return 11;
 	} else {
 		return Number(value);
-	}
-}
-
-function defineWinner(userCardValue, computerCardValue) {
-	if (userCardValue > computerCardValue) {
-		document.querySelector("h2").innerText = "You Win!";
-	} else if (userCardValue < computerCardValue) {
-		document.querySelector("h2").innerText = "You lose";
-	} else {
-		document.querySelector("h2").innerText = "It's a tie";
 	}
 }
