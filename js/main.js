@@ -13,7 +13,6 @@ function createDeck() {
 }
 
 function changeButtons() {
-	document.querySelector("#deck").style.display = "none";
 	document.querySelector("#draw").style.display = "block";
 }
 
@@ -22,6 +21,7 @@ function drawCards() {
 		.then((res) => res.json())
 		.then((data) => {
 			clearH2();
+			displayTable();
 			displayCardImages(data.cards[0].image, data.cards[1].image);
 			defineWinner(
 				calculateCardValue(data.cards[0].value),
@@ -29,6 +29,10 @@ function drawCards() {
 			);
 		})
 		.catch((err) => console.log(`error ${err}`));
+}
+
+function displayTable() {
+	document.querySelector("#table").style.display = "flex";
 }
 
 function clearH2() {
